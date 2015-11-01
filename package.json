@@ -9,6 +9,9 @@
   "author": "Noam \"Amtrak\" Gal",
   "license": "ISC",
   "devDependencies": {
+    "babel-core": "^6.0.14",
+    "babel-loader": "^6.0.0",
+    "babel-preset-es2015": "^6.0.14",
     "css-loader": "^0.21.0",
     "style-loader": "^0.13.0"
   }
