@@ -35,15 +35,40 @@ function getXYZSource(url, attribution) {
     });
 }
 
+let style = new ol.style.Style({
+    image: new ol.style.Circle({
+        fill: new ol.style.Fill({
+            color: 'blue'
+        }),
+        radius: 3
+    }),
+    stroke: new ol.style.Stroke({
+        color: 'red',
+        width: 3
+    }),
+    text: new ol.style.Text({
+        stroke: new ol.style.Stroke({
+            color: 'green',
+            width: 3
+        })
+    })
+});
+
 function getTrailLayer() {
     return new ol.layer.Vector({
         source: new ol.source.Vector({
             // url: 'https://doc-00-1g-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/5rc6qig8jduo8rehoj4j3isv0cefacev/1457265600000/12298955068936497401/*/0B_DXc1YJDxkHU0VoMW93eGhKM1k?e=download',
             url: 'https://dl.dropboxusercontent.com/u/3679475/doc.kml',
             format: new ol.format.KML({
-                showPointNames: true
+                extractStyles: false,
+                // showPointNames: true
             })
-        })
+        }),
+        style: function (feature, resolution) {
+            return style;
+        },
+        updateWhileAnimating: true,
+        updateWhileInteracting: true
     });
 }
 
