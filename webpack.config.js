@@ -3,7 +3,7 @@ var src = __dirname + '/src',
 module.exports = {
     entry: {
         nz: src + '/nz.js',
-        // cdt: src + '/cdt.js'
+        cdt: src + '/cdt.js'
     },
     output: {
         path: output,
