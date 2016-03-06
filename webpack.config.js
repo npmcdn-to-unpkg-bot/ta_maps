@@ -1,15 +1,22 @@
 var src = __dirname + '/src',
     output = __dirname + '/build';
 module.exports = {
-    entry: src + '/main.js',
+    entry: {
+        nz: src + '/nz.js',
+        // cdt: src + '/cdt.js'
+    },
     output: {
         path: output,
-        filename: 'bundle.js',
+        filename: '[name].bundle.js',
         publicPath: '/assets/'
     },
     module: {
         loaders: [
-            { test: /\.css$/, loader: 'style!css' },
+            {
+                test: require.resolve('ol3-layerswitcher/src/ol3-layerswitcher'),
+                loader: 'imports?ol=openlayers'
+            },
+            {test: /\.css$/, loader: 'style!css'},
             {
                 test: /\.js?$/,
                 exclude: /(node_modules|bower_components)/,
