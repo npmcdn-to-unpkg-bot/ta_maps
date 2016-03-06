@@ -1,9 +1,8 @@
-// import 'babel-polyfill';
-import '../style/main.css';
-import ol from 'openlayers';
-import 'openlayers/dist/ol.css';
-import 'ol3-layerswitcher/src/ol3-layerswitcher';
-import 'ol3-layerswitcher/src/ol3-layerswitcher.css';
+import ol from "openlayers";
+import "../style/main.css";
+import "openlayers/dist/ol.css";
+import "ol3-layerswitcher/src/ol3-layerswitcher";
+import "ol3-layerswitcher/src/ol3-layerswitcher.css";
 
 (function () {
     function getLINZUrl (layer) {
