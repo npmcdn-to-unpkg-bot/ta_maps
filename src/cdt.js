@@ -30,7 +30,7 @@ function getXYZSource(url, attribution) {
         attributions: [
             attribution
         ],
-        maxZoom: 16,
+        maxZoom: 15,
         url: url
     });
 }
@@ -57,16 +57,11 @@ let style = new ol.style.Style({
 function getTrailLayer() {
     return new ol.layer.Vector({
         source: new ol.source.Vector({
-            // url: 'https://doc-00-1g-docs.googleusercontent.com/docs/securesc/ha0ro937gcuc7l7deffksulhg5h7mbp1/5rc6qig8jduo8rehoj4j3isv0cefacev/1457265600000/12298955068936497401/*/0B_DXc1YJDxkHU0VoMW93eGhKM1k?e=download',
-            url: 'https://dl.dropboxusercontent.com/u/3679475/doc.kml',
+            url: 'https://dl.dropboxusercontent.com/u/3679475/CDT.kml',
             format: new ol.format.KML({
-                extractStyles: false,
                 showPointNames: true
             })
         }),
-        style: function (feature, resolution) {
-            return style;
-        },
         updateWhileAnimating: true,
         updateWhileInteracting: true
     });
@@ -75,8 +70,8 @@ function getTrailLayer() {
 function onLoad() {
     let view = new ol.View({
             center: ol.proj.fromLonLat([
-                -108.2964364,
-                32.7730533
+                -106.8260192,
+                37.4833574
             ]),
             extent: ol.proj.fromLonLat([
                 -179.999988540844,
@@ -85,9 +80,9 @@ function onLoad() {
                 179.999988540844,
                 88.999999921611
             ])),
-            maxZoom: 16,
+            maxZoom: 15,
             minZoom: 5,
-            zoom: 12
+            zoom: 5
         }),
         map = new ol.Map({
             target: 'map',
@@ -99,7 +94,7 @@ function onLoad() {
             ],
             layers: [
                 getUSTopoLayer(),
-                // getTrailLayer()
+                getTrailLayer()
             ],
             loadTilesWhileAnimating: true,
             loadTilesWhileInteracting: true,
