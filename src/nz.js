@@ -116,7 +116,7 @@ function onLoad() {
             zoom: 5
         }),
         map = new ol.Map({
-            target: 'map',
+            target: 'map-nz',
             controls: [
                 new ol.control.Attribution(),
                 new ol.control.ScaleLine(),

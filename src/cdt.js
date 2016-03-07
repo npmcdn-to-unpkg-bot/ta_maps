@@ -85,7 +85,7 @@ function onLoad() {
             zoom: 5
         }),
         map = new ol.Map({
-            target: 'map',
+            target: 'map-cdt',
             controls: [
                 new ol.control.Attribution(),
                 new ol.control.ScaleLine(),
