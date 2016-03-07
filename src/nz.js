@@ -1,8 +1,8 @@
-import ol from 'openlayers';
-import '../style/main.css';
-import 'openlayers/dist/ol.css';
-import 'ol3-layerswitcher/src/ol3-layerswitcher';
-import 'ol3-layerswitcher/src/ol3-layerswitcher.css';
+import ol from "openlayers";
+import "../style/main.css";
+import "openlayers/dist/ol.css";
+import "ol3-layerswitcher/src/ol3-layerswitcher";
+import "ol3-layerswitcher/src/ol3-layerswitcher.css";
 
 function getLINZUrl(layer) {
     return `http://tiles-{a-d}.data-cdn.linz.govt.nz/services;key=65bc0122063d4dbebe7a16f80eb5f97e/tiles/v4/layer=${layer}/EPSG:3857/{z}/{x}/{y}.png`;
@@ -120,7 +120,7 @@ function onLoad() {
             controls: [
                 new ol.control.Attribution(),
                 new ol.control.ScaleLine(),
-                // new ol.control.LayerSwitcher(),
+                new ol.control.LayerSwitcher(),
                 new ol.control.Zoom(),
                 new ol.control.ZoomSlider()
             ],
