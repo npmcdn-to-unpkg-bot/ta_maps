@@ -1,8 +1,9 @@
-var gulp = require('gulp');
-var gutil = require('gulp-util');
-var webpack = require('webpack');
-var WebpackDevServer = require('webpack-dev-server');
-var webpackConfig = require('./webpack.config.js');
+'use strict';
+let gulp = require('gulp');
+let gutil = require('gulp-util');
+let webpack = require('webpack');
+let WebpackDevServer = require('webpack-dev-server');
+let webpackConfig = require('./webpack.config.js');
 
 //webpackConfig.output.path = outputPath;
 
@@ -22,7 +23,7 @@ gulp.task('build', ['webpack:build']);
 
 gulp.task('webpack:build', function (callback) {
     // modify some webpack config options
-    var myConfig = Object.create(webpackConfig);
+    let myConfig = Object.create(webpackConfig);
     myConfig.plugins = (myConfig.plugins || []).concat(
         new webpack.DefinePlugin({
             'process.env': {
@@ -45,12 +46,12 @@ gulp.task('webpack:build', function (callback) {
 });
 
 // modify some webpack config options
-var myDevConfig = Object.create(webpackConfig);
+let myDevConfig = Object.create(webpackConfig);
 myDevConfig.devtool = 'source-map';
 myDevConfig.debug = true;
 
 // create a single instance of the compiler to allow caching
-var devCompiler = webpack(myDevConfig);
+let devCompiler = webpack(myDevConfig);
 
 gulp.task('webpack:build-dev', function (callback) {
     // run webpack
@@ -63,12 +64,12 @@ gulp.task('webpack:build-dev', function (callback) {
     });
 });
 
-gulp.task('webpack-dev-server', function (callback) {
+gulp.task('webpack-dev-server', function () {
     // modify some webpack config options
-    var serverConfig = Object.create(webpackConfig);
+    let serverConfig = Object.create(webpackConfig);
     serverConfig.devtool = 'eval-source-map';
     serverConfig.debug = true;
-    var serverCompiler = webpack(serverConfig);
+    let serverCompiler = webpack(serverConfig);
 
     // Start a webpack-dev-server
     new WebpackDevServer(serverCompiler, {

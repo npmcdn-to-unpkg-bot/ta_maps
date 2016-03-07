@@ -61,7 +61,7 @@ function getTrailLayer() {
             url: 'https://dl.dropboxusercontent.com/u/3679475/doc.kml',
             format: new ol.format.KML({
                 extractStyles: false,
-                // showPointNames: true
+                showPointNames: true
             })
         }),
         style: function (feature, resolution) {
@@ -99,7 +99,7 @@ function onLoad() {
             ],
             layers: [
                 getUSTopoLayer(),
-                getTrailLayer()
+                // getTrailLayer()
             ],
             loadTilesWhileAnimating: true,
             loadTilesWhileInteracting: true,

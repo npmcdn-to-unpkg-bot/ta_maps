@@ -1,8 +1,8 @@
-import ol from "openlayers";
-import "../style/main.css";
-import "openlayers/dist/ol.css";
-import "ol3-layerswitcher/src/ol3-layerswitcher";
-import "ol3-layerswitcher/src/ol3-layerswitcher.css";
+import ol from 'openlayers';
+import '../style/main.css';
+import 'openlayers/dist/ol.css';
+import 'ol3-layerswitcher/src/ol3-layerswitcher';
+import 'ol3-layerswitcher/src/ol3-layerswitcher.css';
 
 function getLINZUrl(layer) {
     return `http://tiles-{a-d}.data-cdn.linz.govt.nz/services;key=65bc0122063d4dbebe7a16f80eb5f97e/tiles/v4/layer=${layer}/EPSG:3857/{z}/{x}/{y}.png`;
@@ -17,9 +17,13 @@ function getLINZLayer() {
         layer = new ol.layer.Tile({
             title: 'Land Information',
             type: 'base',
-            extent: ol.proj.fromLonLat([166.31571873,
-                -47.5345551556]).concat(ol.proj.fromLonLat([178.610868168,
-                -34.030252207])),
+            extent: ol.proj.fromLonLat([
+                166.31571873,
+                -47.5345551556
+            ]).concat(ol.proj.fromLonLat([
+                178.610868168,
+                -34.030252207
+            ])),
             preload: 7,
             source: source250
         });
@@ -31,20 +35,24 @@ function getLINZLayer() {
 function getLandcareLayers() {
     const html = 'Source: Landcare Research and licensed by Landcare Research for re-use under <a href="http://creativecommons.org/licenses/by/3.0/nz/">Creative Commons CC-BY New Zealand license</a>.';
     let topobaseLayer = getLandcareLayer('topobasemap_notext', html),
-        textLayer = getLandcareLayer('text', attribution, true);
+        textLayer = getLandcareLayer('text', html, true);
     topobaseLayer.set('textLayer', textLayer);
     return topobaseLayer;
 }
 
-function getLandcareLayer(layer, attribution, overlay = false) {
+function getLandcareLayer(layer, html, overlay = false) {
     let url = 'http://maps.scinfo.org.nz/cached/tms/1.0.0/' + layer + '@g/{z}/{x}/{-y}.png',
-        source = getXYZSource(url, attribution);
+        source = getXYZSource(url, html);
     return new ol.layer.Tile({
         title: 'Landcare Research',
         type: overlay ? 'overlay' : 'base',
-        extent: ol.proj.fromLonLat([165,
-            -48]).concat(ol.proj.fromLonLat([179.5,
-            -33])),
+        extent: ol.proj.fromLonLat([
+            165,
+            -48
+        ]).concat(ol.proj.fromLonLat([
+            179.5,
+            -33
+        ])),
         preload: 7,
         source: source
     });
@@ -112,14 +120,13 @@ function onLoad() {
             controls: [
                 new ol.control.Attribution(),
                 new ol.control.ScaleLine(),
-                new ol.control.LayerSwitcher(),
+                // new ol.control.LayerSwitcher(),
                 new ol.control.Zoom(),
                 new ol.control.ZoomSlider()
             ],
             layers: [
                 landcareLayer,
                 linzLayer,
-                //getLINZLayerWMS(),
                 getTrailLayer()
             ],
             loadTilesWhileAnimating: true,
