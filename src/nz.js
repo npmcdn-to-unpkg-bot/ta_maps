@@ -137,7 +137,7 @@ function onLoad() {
         let newValue = landcareLayer.getVisible();
         if (newValue !== e.oldValue) {
             let textLayer = landcareLayer.get('textLayer'),
-                mapElement = document.getElementById('map');
+                mapElement = document.getElementById('map-nz');
             if (newValue) {
                 mapElement.classList.remove('linz');
                 mapElement.classList.add('landcare');
