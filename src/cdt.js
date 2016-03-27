@@ -35,25 +35,6 @@ function getXYZSource(url, attribution) {
     });
 }
 
-let style = new ol.style.Style({
-    image: new ol.style.Circle({
-        fill: new ol.style.Fill({
-            color: 'blue'
-        }),
-        radius: 3
-    }),
-    stroke: new ol.style.Stroke({
-        color: 'red',
-        width: 3
-    }),
-    text: new ol.style.Text({
-        stroke: new ol.style.Stroke({
-            color: 'green',
-            width: 3
-        })
-    })
-});
-
 function getTrailLayer() {
     return new ol.layer.Vector({
         source: new ol.source.Vector({
