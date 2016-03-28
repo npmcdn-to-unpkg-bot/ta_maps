@@ -8,21 +8,20 @@ function getUSTopoLayer() {
     const html = 'Source: Copyright:© 2013 National Geographic Society, i-cubed</a>.';
     let url = 'http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}.png',
         attribution = new ol.Attribution({html}),
-        source = getXYZSource(url, attribution),
-        layer = new ol.layer.Tile({
-            title: 'Land Information',
-            type: 'base',
-            extent: ol.proj.fromLonLat([
-                -179.999988540844,
-                -88.9999999216112
-            ]).concat(ol.proj.fromLonLat([
-                179.999988540844,
-                88.999999921611
-            ])),
-            preload: 7,
-            source: source
-        });
-    return layer;
+        source = getXYZSource(url, attribution);
+    return new ol.layer.Tile({
+        title: 'Land Information',
+        type: 'base',
+        extent: ol.proj.fromLonLat([
+            -179.999988540844,
+            -88.9999999216112
+        ]).concat(ol.proj.fromLonLat([
+            179.999988540844,
+            88.999999921611
+        ])),
+        preload: 7,
+        source: source
+    });
 }
 
 function getXYZSource(url, attribution) {
@@ -81,10 +80,55 @@ function onLoad() {
             loadTilesWhileInteracting: true,
             view: view
         });
-    view.on('change:resolution', function () {
-        let z = view.getZoom(),
-            newSource = z < 12 ? linzLayer.get('source250') : linzLayer.get('source50');
-        linzLayer.setSource(newSource);
+}
+
+function createSource({attribution, url}) {
+    return new ol.source.XYZ({
+        attributions: [
+            attribution
+        ],
+        maxZoom: 15,
+        url: url
+    });
+}
+
+function createLayer({title, source, extent}) {
+    source = createSource(source);
+    return new ol.layer.Tile({
+        title: title,
+        type: 'base',
+        extent: extent,
+        preload: 7,
+        source: source
+    });
+}
+
+function createView({center, extent}) {
+    return new ol.View({
+        center: center,
+        extent: extent,
+        maxZoom: 15,
+        minZoom: 5,
+        zoom: 5
+    });
+}
+
+//target, [title, attribution, url, extent], {center, extent}
+function createMap({target, layers: [], view}) {
+    layers = layers.forEach(l => createLayer(l));
+    view = createView({center, extent});
+    return new ol.Map({
+        target: target,
+        controls: [
+            new ol.control.Attribution(),
+            new ol.control.ScaleLine(),
+            new ol.control.Zoom(),
+            new ol.control.ZoomSlider()
+        ],
+        layers: layers,
+        loadTilesWhileAnimating: true,
+        loadTilesWhileInteracting: true,
+        view: view
     });
 }
 
