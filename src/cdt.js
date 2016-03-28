@@ -1,8 +1,6 @@
-import ol from "openlayers";
-import "../style/main.css";
-import "openlayers/dist/ol.css";
-import "ol3-layerswitcher/src/ol3-layerswitcher";
-import "ol3-layerswitcher/src/ol3-layerswitcher.css";
+import ol from 'openlayers/dist/ol-debug';
+import '../style/main.css';
+import 'openlayers/dist/ol.css';
 
 const CDT_MAP = {
     target: 'map-cdt',
@@ -10,31 +8,23 @@ const CDT_MAP = {
         {
             type: 'tile',
             source: {
-                attribution: 'Source: Copyright:© 2013 National Geographic Society, i-cubed</a>.',
+                type: 'xyz',
+                html: 'Source: Copyright:© 2013 National Geographic Society, i-cubed</a>.',
                 url: 'http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}.png'
-            },
-            extent: [
-                -179.999988540844,
-                -88.9999999216112,
-                179.999988540844,
-                88.999999921611
-            ]
+            }
         },
         {
             type: 'vector',
-            url: 'https://dl.dropboxusercontent.com/u/3679475/CDT.kml'
+            source: {
+                type: 'kml',
+                url: 'https://dl.dropboxusercontent.com/u/3679475/CDT.kml'
+            }
         }
     ],
     view: {
         center: [
             -106.8260192,
             37.4833574
-        ],
-        extent: [
-            -179.999988540844,
-            -88.9999999216112,
-            179.999988540844,
-            88.999999921611
         ]
     }
 };
@@ -43,67 +33,63 @@ function onLoad() {
     createMap(CDT_MAP);
 }
 
-function createSource({attribution, url}) {
+function createXYZSource({html, url}) {
     return new ol.source.XYZ({
         attributions: [
-            new ol.Attribution({attribution})
+            new ol.Attribution({html})
         ],
         maxZoom: 15,
         url
     });
 }
 
-function createTileLayer({source, extent}) {
+function createVectorSource({url}) {
+    return new ol.source.Vector({
+        url,
+        format: new ol.format.KML({
+            showPointNames: true
+        })
+    });
+}
+
+function createSource({type}) {
+    return type === 'xyz' ? createXYZSource.apply(this, arguments) : createVectorSource.apply(this, arguments);
+}
+
+function createTileLayer({source}) {
     return new ol.layer.Tile({
         type: 'base',
-        extent: ol.proj.fromLonLat([
-            extent[0],
-            extent[1]
-        ]).concat(ol.proj.fromLonLat([
-            extent[2],
-            extent[3]
-        ])),
         preload: 7,
         source: createSource(source)
     });
 }
 
-function createVectorLayer({url}) {
-    return new ol.layer.Vector({
-        source: new ol.source.Vector({
-            url,
-            format: new ol.format.KML({
-                showPointNames: true
-            })
-        }),
-        updateWhileAnimating: true,
-        updateWhileInteracting: true
+function createVectorLayer({source}) {
+    let layer = new ol.layer.Vector({
+            source: createSource(source),
+            updateWhileAnimating: true,
+            updateWhileInteracting: true
+        });
+    layer.getSource().once('change', (e) => {
+        layer.setExtent(e.target.getExtent());
     });
+    return layer;
 }
 
 function createLayer({type}) {
     return type === 'tile' ? createTileLayer.apply(this, arguments) : createVectorLayer.apply(this, arguments);
 }
 
-function createView({center, extent}) {
+function createView({center}) {
     return new ol.View({
         center: ol.proj.fromLonLat(center),
-        extent: ol.proj.fromLonLat([
-            extent[0],
-            extent[1]
-        ]).concat(ol.proj.fromLonLat([
-            extent[2],
-            extent[3]
-        ])),
         maxZoom: 15,
-        minZoom: 5,
         zoom: 5
     });
 }
 
-//target, [{attribution, url}, extent], {center, extent}
 function createMap({target, layers, view} = {layers: []}) {
-    return new ol.Map({
+    let map = new ol.Map({
         target,
         controls: [
             new ol.control.Attribution(),
@@ -116,6 +102,17 @@ function createMap({target, layers, view} = {layers: []}) {
         loadTilesWhileInteracting: true,
         view: createView(view)
     });
+    map.getLayers().forEach(l => {
+        if (l instanceof ol.layer.Vector) {
+            l.once('change:extent', (e) => {
+                let view = map.getView(),
+                    extent = e.target.getExtent();
+                view.fit(extent, map.getSize());
+                view.setExtent(extent);
+            });
+        }
+    });
+    return map;
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);
