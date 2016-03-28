@@ -8,7 +8,7 @@ const CDT_MAP = {
             type: 'tile',
             source: {
                 type: 'xyz',
-                html: 'Source: Copyright:© 2013 National Geographic Society, i-cubed</a>.',
+                html: 'Source: Copyright:© 2013 National Geographic Society, i-cubed.',
                 url: 'http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}.png'
             }
         },
