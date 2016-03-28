@@ -36,11 +36,12 @@ async function testBucket(bucket) {
 async function makeApiCall() {
     console.profile('async');
     await loadApi();
-    await testBucket('atgardner');
+    //await testBucket('atgardner');
     await testBucket('atgardner-blog');
     console.profileEnd('async');
 }
 
+//region promises
 function getObject2(bucket, object) {
     console.time(`promises ${bucket}-get`);
     return gapi.client.storage.objects.get({
@@ -71,17 +72,18 @@ function testBucket2(bucket) {
 }
 
 function makeApiCall2() {
-    console.profile('promises');
+    // console.profile('promises');
     loadApi()
         .then(() => {
-            return testBucket2('atgardner');
+            //return testBucket2('atgardner');
         })
         .then(()=> {
             return testBucket2('atgardner-blog');
         })
         .then(() => {
-            console.profileEnd('promises');
+            // console.profileEnd('promises');
         })
 }
+//endregion
 
 window.onload = handleClientLoad;
