@@ -3,6 +3,28 @@ import "../style/main.css";
 import "openlayers/dist/ol.css";
 import "ol3-layerswitcher/src/ol3-layerswitcher";
 import "ol3-layerswitcher/src/ol3-layerswitcher.css";
+import {createMap} from "./maps";
+
+const NZ_MAP = {
+    target: 'map-nz',
+    layers: [
+        {
+            type: 'tile',
+            source: {
+                type: 'xyz',
+                html: 'CC-By Land Information New Zealand. This product uses data sourced from Landcare Research under <a href="http://creativecommons.org/licenses/by/3.0/nz">CC-BY</a>',
+                url: getLINZUrl(2343)
+            }
+        },
+        {
+            type: 'vector',
+            source: {
+                type: 'gpx',
+                url: 'https://dl.dropboxusercontent.com/u/3679475/TeAraroaTrail_asTrack.gpx'
+            }
+        }
+    ]
+};
 
 function getLINZUrl(layer) {
     return `http://tiles-{a-d}.data-cdn.linz.govt.nz/services;key=65bc0122063d4dbebe7a16f80eb5f97e/tiles/v4/layer=${layer}/EPSG:3857/{z}/{x}/{y}.png`;
@@ -97,62 +119,66 @@ function getTrailLayer() {
 }
 
 function onLoad() {
-    let landcareLayer = getLandcareLayers(),
-        linzLayer = getLINZLayer(),
-        view = new ol.View({
-            center: ol.proj.fromLonLat([
-                174.6217726,
-                -41.244027
-            ]),
-            extent: ol.proj.fromLonLat([
-                    166.31571873,
-                    -47.5345551556])
-                .concat(ol.proj.fromLonLat([
-                    178.610868168,
-                    -34.030252207
-                ])),
-            maxZoom: 15,
-            minZoom: 5,
-            zoom: 5
-        }),
-        map = new ol.Map({
-            target: 'map-nz',
-            controls: [
-                new ol.control.Attribution(),
-                new ol.control.ScaleLine(),
-                new ol.control.LayerSwitcher(),
-                new ol.control.Zoom(),
-                new ol.control.ZoomSlider()
-            ],
-            layers: [
-                landcareLayer,
-                linzLayer,
-                getTrailLayer()
-            ],
-            loadTilesWhileAnimating: true,
-            loadTilesWhileInteracting: true,
-            view: view
-        });
-    landcareLayer.on('change:visible', function (e) {
-        let newValue = landcareLayer.getVisible();
-        if (newValue !== e.oldValue) {
-            let textLayer = landcareLayer.get('textLayer'),
-                mapElement = document.getElementById('map-nz');
-            if (newValue) {
-                mapElement.classList.remove('linz');
-                mapElement.classList.add('landcare');
-                textLayer.setMap(map);
-            } else {
-                mapElement.classList.add('linz');
-                mapElement.classList.remove('landcare');
-                textLayer.setMap();
-            }
-        }
-    });
-    view.on('change:resolution', function () {
-        let z = view.getZoom(),
-            newSource = z < 12 ? linzLayer.get('source250') : linzLayer.get('source50');
-        linzLayer.setSource(newSource);
+    // let landcareLayer = getLandcareLayers(),
+    //     linzLayer = getLINZLayer(),
+    //     view = new ol.View({
+    //         center: ol.proj.fromLonLat([
+    //             174.6217726,
+    //             -41.244027
+    //         ]),
+    //         extent: ol.proj.fromLonLat([
+    //                 166.31571873,
+    //                 -47.5345551556])
+    //             .concat(ol.proj.fromLonLat([
+    //                 178.610868168,
+    //                 -34.030252207
+    //             ])),
+    //         maxZoom: 15,
+    //         minZoom: 5,
+    //         zoom: 5
+    //     }),
+    //     map = new ol.Map({
+    //         target: 'map-nz',
+    //         controls: [
+    //             new ol.control.Attribution(),
+    //             new ol.control.ScaleLine(),
+    //             new ol.control.LayerSwitcher(),
+    //             new ol.control.Zoom(),
+    //             new ol.control.ZoomSlider()
+    //         ],
+    //         layers: [
+    //             landcareLayer,
+    //             linzLayer,
+    //             getTrailLayer()
+    //         ],
+    //         loadTilesWhileAnimating: true,
+    //         loadTilesWhileInteracting: true,
+    //         view: view
+    //     });
+    // landcareLayer.on('change:visible', function (e) {
+    //     let newValue = landcareLayer.getVisible();
+    //     if (newValue !== e.oldValue) {
+    //         let textLayer = landcareLayer.get('textLayer'),
+    //             mapElement = document.getElementById('map-nz');
+    //         if (newValue) {
+    //             mapElement.classList.remove('linz');
+    //             mapElement.classList.add('landcare');
+    //             textLayer.setMap(map);
+    //         } else {
+    //             mapElement.classList.add('linz');
+    //             mapElement.classList.remove('landcare');
+    //             textLayer.setMap();
+    //         }
+    //     }
+    // });
+    // view.on('change:resolution', function () {
+    //     let z = view.getZoom(),
+    //         newSource = z < 12 ? linzLayer.get('source250') : linzLayer.get('source50');
+    //     linzLayer.setSource(newSource);
+    // });
+    window.m = createMap(NZ_MAP);
+    m.getView().on('change:resolution', () => {
+        let a = 123;
     });
 }
 

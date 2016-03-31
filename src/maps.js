@@ -1,5 +1,5 @@
-import ol from 'openlayers';
-import 'openlayers/dist/ol.css';
+import ol from "openlayers";
+import "openlayers/dist/ol.css";
 
 function createXYZSource({html, url}) {
     return new ol.source.XYZ({
@@ -11,7 +11,7 @@ function createXYZSource({html, url}) {
     });
 }
 
-function createVectorSource({url}) {
+function createKmlSource({url}) {
     return new ol.source.Vector({
         url,
         format: new ol.format.KML({
@@ -20,15 +20,33 @@ function createVectorSource({url}) {
     });
 }
 
-function createSource({type}) {
-    return type === 'xyz' ? createXYZSource.apply(this, arguments) : createVectorSource.apply(this, arguments);
+function createGpxSource({url}) {
+    return new ol.source.Vector({
+        url,
+        format: new ol.format.GPX()
+    });
 }
 
-function createTileLayer({source}) {
+function createSource(config) {
+    switch (config.type) {
+        case 'xyz':
+            return createXYZSource(config);
+        case 'kml':
+            return createKmlSource(config);
+        case 'gpx':
+            return createGpxSource(config);
+        default:
+            throw new Error(`Invalid source type ${type}`);
+    }
+}
+
+function createTileLayer({source, minResolution, maxResolution} = {minResolution: 10, maxResolution: 13}) {
     return new ol.layer.Tile({
         type: 'base',
         preload: 7,
-        source: createSource(source)
+        source: createSource(source),
+        minResolution,
+        maxResolution
     });
 }
 
@@ -38,17 +56,45 @@ function createVectorLayer({source}) {
         updateWhileAnimating: true,
         updateWhileInteracting: true
     });
+    if (source.type === 'gpx') {
+        layer.setStyle(new ol.style.Style({
+            image: new ol.style.Circle({
+                fill: new ol.style.Fill({
+                    color: 'blue'
+                }),
+                radius: 3
+            }),
+            stroke: new ol.style.Stroke({
+                color: 'red',
+                width: 3
+            }),
+            text: new ol.style.Text({
+                stroke: new ol.style.Stroke({
+                    color: 'green',
+                    width: 3
+                })
+            })
+        }));
+    }
+
     layer.getSource().once('change', (e) => {
         layer.setExtent(e.target.getExtent());
     });
     return layer;
 }
 
-function createLayer({type}) {
-    return type === 'tile' ? createTileLayer.apply(this, arguments) : createVectorLayer.apply(this, arguments);
+function createLayer(config) {
+    switch (config.type) {
+        case 'tile':
+            return createTileLayer(config);
+        case 'vector':
+            return createVectorLayer(config);
+        default:
+            throw new Error(`Invalid layer type ${type}`);
+    }
 }
 
-function createView({center}) {
+function createView({center} = {center: [0, 0]}) {
     return new ol.View({
         center: ol.proj.fromLonLat(center),
         maxZoom: 15,
@@ -76,7 +122,6 @@ export function createMap({target, layers, view} = {layers: []}) {
                 let view = map.getView(),
                     extent = e.target.getExtent();
                 view.fit(extent, map.getSize());
-                view.setExtent(extent);
             });
         }
     });
