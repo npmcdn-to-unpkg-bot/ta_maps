@@ -3,7 +3,7 @@ import "../style/main.css";
 import "openlayers/dist/ol.css";
 import "ol3-layerswitcher/src/ol3-layerswitcher";
 import "ol3-layerswitcher/src/ol3-layerswitcher.css";
-import {createMap} from "./maps";
+import {createMapWithDefaults} from "./maps";
 
 const NZ_MAP = {
     target: 'map-nz',
@@ -176,7 +176,7 @@ function onLoad() {
     //         newSource = z < 12 ? linzLayer.get('source250') : linzLayer.get('source50');
     //     linzLayer.setSource(newSource);
     // });
-    window.m = createMap(NZ_MAP);
+    window.m = createMapWithDefaults(NZ_MAP);
     m.getView().on('change:resolution', () => {
         let a = 123;
     });

@@ -1,6 +1,23 @@
 import ol from "openlayers";
 import "openlayers/dist/ol.css";
 
+function createControl(control) {
+    let className = typeof control === 'string' ? control : control.className;
+    return new ol.control[className](control);
+}
+
+function createControls(controls) {
+    if (!controls) {
+        return;
+    }
+
+    return controls.map(createControl);
+}
+
+function createInteractions(interactions) {
+    return;
+}
+
 function createXYZSource({html, url}) {
     return new ol.source.XYZ({
         attributions: [
@@ -94,6 +111,14 @@ function createLayer(config) {
     }
 }
 
+function createLayers(layers) {
+    if (!layers) {
+        return;
+    }
+
+    return layers.map(createLayer);
+}
+
 function createView({center} = {center: [0, 0]}) {
     return new ol.View({
         center: ol.proj.fromLonLat(center),
@@ -102,20 +127,15 @@ function createView({center} = {center: [0, 0]}) {
     });
 }
 
-export function createMap({target, layers, view} = {layers: []}) {
-    let map = new ol.Map({
-        target,
-        controls: [
-            new ol.control.Attribution(),
-            new ol.control.ScaleLine(),
-            new ol.control.Zoom(),
-            new ol.control.ZoomSlider()
-        ],
-        layers: layers.map(createLayer),
-        loadTilesWhileAnimating: true,
-        loadTilesWhileInteracting: true,
-        view: createView(view)
-    });
+export function createMap(config) {
+    let map = new ol.Map(Object.assign(config, {
+        controls: createControls(config.controls),
+        interactions: createInteractions(config.interactions),
+        layers: createLayers(config.layers),
+        //overlays
+        //renderer
+        view: createView(config.view)
+    }));
     map.getLayers().forEach(l => {
         if (l instanceof ol.layer.Vector) {
             l.once('change:extent', (e) => {
@@ -126,4 +146,17 @@ export function createMap({target, layers, view} = {layers: []}) {
         }
     });
     return map;
+}
+
+export function createMapWithDefaults(config) {
+    return createMap(Object.assign({
+        controls: [
+            'Attribution',
+            'ScaleLine',
+            'Zoom',
+            'ZoomSlider'
+        ],
+        loadTilesWhileAnimating: true,
+        loadTilesWhileInteracting: true
+    }, config));
 }
