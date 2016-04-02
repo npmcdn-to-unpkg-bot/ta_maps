@@ -27,6 +27,28 @@ const MAP_DEFAULTS = {
         maxZoom: 15
     };
 
+function addListeners(object, config) {
+    if (!config.listeners) {
+        return;
+    }
+
+    for (let type in config.listeners) {
+        let listener = config.listeners[type];
+        let fn,
+            scope,
+            once = false;
+        if (listener.fn) {
+            fn = listener.fn;
+            scope = listener.opt_this;
+            once = listener.once;
+        } else {
+            fn = listener;
+        }
+
+        object[once ? 'once' : 'on'](type, fn, scope);
+    }
+}
+
 function createControl(config) {
     let className = typeof config === 'string' ? config : config.className;
     return new ol.control[className](config);
@@ -55,7 +77,9 @@ function createSource(config) {
         format: createFormat(config.format)
     });
 
-    return new ol.source[config.className](config);
+    let source = new ol.source[config.className](config);
+    addListeners(source, config)
+    return source
 }
 
 function createGeometryCollection(config) {
@@ -123,20 +147,15 @@ function createStyle(config) {
     return new ol.style.Style(config);
 }
 
-// function createVectorLayer(config) {
-//     layer.getSource().once('change', (e) => {
-//         layer.setExtent(e.target.getExtent());
-//     });
-//     return layer;
-// }
-
 function createLayer(config) {
     config = Object.assign({}, LAYER_DEFAULTS, config);
     Object.assign(config, {
         source: createSource(config.source),
         style: createStyle(config.style)
     });
-    return new ol.layer[config.className](config);
+    let layer = new ol.layer[config.className](config);
+    addListeners(layer, config);
+    return layer;
 }
 
 function createLayers(layers) {

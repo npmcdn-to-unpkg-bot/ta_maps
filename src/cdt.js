@@ -26,6 +26,13 @@ const CDT_MAP = {
                     className: 'KML',
                     showPointNames: true
                 }
+            },
+            listeners: {
+                change: e => {
+                    let layer = e.target,
+                        extent = layer.getSource().getExtent();
+                    layer.setExtent(extent);
+                }
             }
         }
     ]
