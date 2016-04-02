@@ -1,26 +1,39 @@
-import ol from "openlayers";
-import "../style/main.css";
-import "openlayers/dist/ol.css";
-import "ol3-layerswitcher/src/ol3-layerswitcher";
-import "ol3-layerswitcher/src/ol3-layerswitcher.css";
-import {createMapWithDefaults} from "./maps";
+import ol from 'openlayers';
+import '../style/main.css';
+import 'openlayers/dist/ol.css';
+import 'ol3-layerswitcher/src/ol3-layerswitcher';
+import 'ol3-layerswitcher/src/ol3-layerswitcher.css';
+import {createMap} from './maps';
 
 const NZ_MAP = {
     target: 'map-nz',
     layers: [
         {
-            type: 'tile',
+            className: 'Tile',
             source: {
-                type: 'xyz',
-                html: 'CC-By Land Information New Zealand. This product uses data sourced from Landcare Research under <a href="http://creativecommons.org/licenses/by/3.0/nz">CC-BY</a>',
-                url: getLINZUrl(2343)
+                className: 'XYZ',
+                url: getLINZUrl(2343),
+                attributions: [
+                    {
+                        html: 'CC-By Land Information New Zealand. This product uses data sourced from Landcare Research under <a href="http://creativecommons.org/licenses/by/3.0/nz">CC-BY</a>'
+                    }
+                ]
             }
         },
         {
-            type: 'vector',
+            className: 'Vector',
             source: {
-                type: 'gpx',
-                url: 'https://dl.dropboxusercontent.com/u/3679475/TeAraroaTrail_asTrack.gpx'
+                className: 'Vector',
+                url: 'https://dl.dropboxusercontent.com/u/3679475/TeAraroaTrail_asTrack.gpx',
+                format: {
+                    className: 'GPX'
+                }
+            },
+            style: {
+                stroke: {
+                    color: 'red',
+                    width: 2
+                }
             }
         }
     ]
@@ -91,33 +104,6 @@ function getXYZSource(url, html) {
     });
 }
 
-function getTrailLayer() {
-    return new ol.layer.Vector({
-        source: new ol.source.Vector({
-            url: 'https://dl.dropboxusercontent.com/u/3679475/TeAraroaTrail_asTrack.gpx',
-            format: new ol.format.GPX()
-        }),
-        style: new ol.style.Style({
-            image: new ol.style.Circle({
-                fill: new ol.style.Fill({
-                    color: 'blue'
-                }),
-                radius: 3
-            }),
-            stroke: new ol.style.Stroke({
-                color: 'red',
-                width: 3
-            }),
-            text: new ol.style.Text({
-                stroke: new ol.style.Stroke({
-                    color: 'green',
-                    width: 3
-                })
-            })
-        })
-    });
-}
-
 function onLoad() {
     // let landcareLayer = getLandcareLayers(),
     //     linzLayer = getLINZLayer(),
@@ -176,10 +162,7 @@ function onLoad() {
     //         newSource = z < 12 ? linzLayer.get('source250') : linzLayer.get('source50');
     //     linzLayer.setSource(newSource);
     // });
-    window.m = createMapWithDefaults(NZ_MAP);
-    m.getView().on('change:resolution', () => {
-        let a = 123;
-    });
+    createMap(NZ_MAP);
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);
