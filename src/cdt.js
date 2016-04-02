@@ -28,10 +28,13 @@ const CDT_MAP = {
                 }
             },
             listeners: {
-                change: e => {
-                    let layer = e.target,
-                        extent = layer.getSource().getExtent();
-                    layer.setExtent(extent);
+                change: {
+                    once: true,
+                    fn: e => {
+                        let layer = e.target,
+                            extent = layer.getSource().getExtent();
+                        layer.setExtent(extent);
+                    }
                 }
             }
         }

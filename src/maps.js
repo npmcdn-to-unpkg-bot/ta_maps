@@ -175,6 +175,10 @@ function createView(config) {
     return new ol.View(config);
 }
 
+function calcResolutionForZoom(view, zoom) {
+    return zoom && view.constrainResolution(view.getResolution() * Math.pow(2, view.getZoom()), zoom);
+}
+
 export function createMap(config) {
     config = Object.assign({}, MAP_DEFAULTS, config);
     Object.assign(config, {
@@ -185,7 +189,8 @@ export function createMap(config) {
         //renderer: createRenderer(config.renderer),
         view: createView(config.view)
     });
-    let map = new ol.Map(config);
+    let map = new ol.Map(config),
+        view = map.getView();
     map.getLayers().forEach(l => {
         if (l instanceof ol.layer.Vector) {
             l.once('change:extent', (e) => {
@@ -193,6 +198,14 @@ export function createMap(config) {
                     extent = e.target.getExtent();
                 view.fit(extent, map.getSize());
             });
+        }
+
+        if (l.get('minZoom')) {
+            l.setMinResolution(calcResolutionForZoom(view, l.get('minZoom')));
+        }
+
+        if (l.get('maxZoom')) {
+            l.setMaxResolution(calcResolutionForZoom(view, l.get('maxZoom')));
         }
     });
     window.m = map;

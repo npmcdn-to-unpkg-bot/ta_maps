@@ -10,9 +10,23 @@ const NZ_MAP = {
     layers: [
         {
             className: 'Tile',
+            maxZoom: 12,
             source: {
                 className: 'XYZ',
                 url: getLINZUrl(2343),
+                attributions: [
+                    {
+                        html: 'CC-By Land Information New Zealand. This product uses data sourced from Landcare Research under <a href="http://creativecommons.org/licenses/by/3.0/nz">CC-BY</a>'
+                    }
+                ]
+            }
+        },
+        {
+            className: 'Tile',
+            minZoom: 12,
+            source: {
+                className: 'XYZ',
+                url: getLINZUrl(2324),
                 attributions: [
                     {
                         html: 'CC-By Land Information New Zealand. This product uses data sourced from Landcare Research under <a href="http://creativecommons.org/licenses/by/3.0/nz">CC-BY</a>'
@@ -36,10 +50,13 @@ const NZ_MAP = {
                 }
             },
             listeners: {
-                change: e => {
-                    let layer = e.target,
-                        extent = layer.getSource().getExtent();
-                    layer.setExtent(extent);
+                change: {
+                    once: true,
+                    fn: e => {
+                        let layer = e.target,
+                            extent = layer.getSource().getExtent();
+                        layer.setExtent(extent);
+                    }
                 }
             }
         }
@@ -169,7 +186,11 @@ function onLoad() {
     //         newSource = z < 12 ? linzLayer.get('source250') : linzLayer.get('source50');
     //     linzLayer.setSource(newSource);
     // });
-    createMap(NZ_MAP);
+    let m = createMap(NZ_MAP);
+    m.getView().on('change:resolution', e => {
+        let z = e.target.getZoom();
+        console.log(`Resolution: ${e.target.getResolution()}, zoom: ${z}`);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', onLoad);
