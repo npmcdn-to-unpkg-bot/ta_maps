@@ -4,7 +4,7 @@ module.exports = {
     entry: {
         nz: src + '/nz.js',
         cdt: src + '/cdt.js',
-        // main: src + '/main.js'
+        // trails: src + '/trails.js'
     },
     output: {
         path: output,

@@ -1,4 +1,5 @@
-import {createMap} from './maps';
+import {createMap} from "./maps";
+import {getTrailMap} from "./trails";
 
 const CDT_MAP = {
     target: 'map-cdt',
@@ -21,8 +22,7 @@ const CDT_MAP = {
                 className: 'Vector',
                 url: 'https://dl.dropboxusercontent.com/u/3679475/CDT.kml',
                 format: {
-                    className: 'KML',
-                    showPointNames: true
+                    className: 'KML'
                 }
             }
         }
@@ -32,6 +32,8 @@ const CDT_MAP = {
 
 function onLoad() {
     createMap(CDT_MAP);
+    getTrailMap('cdt');
 }
 
-document.addEventListener('DOMContentLoaded', onLoad);
+window.onload = onLoad;
+// document.addEventListener('DOMContentLoaded', onLoad);
