@@ -1,4 +1,3 @@
-import '../style/main.css';
 import {createMap} from './maps';
 
 const CDT_MAP = {
@@ -14,8 +13,7 @@ const CDT_MAP = {
                         html: 'Source: Copyright:© 2013 National Geographic Society, i-cubed.'
                     }
                 ]
-            },
-            minZoom: 5
+            }
         },
         {
             className: 'Vector',
@@ -26,19 +24,10 @@ const CDT_MAP = {
                     className: 'KML',
                     showPointNames: true
                 }
-            },
-            listeners: {
-                change: {
-                    once: true,
-                    fn: e => {
-                        let layer = e.target,
-                            extent = layer.getSource().getExtent();
-                        layer.setExtent(extent);
-                    }
-                }
             }
         }
-    ]
+    ],
+    fit: [-12683252.084670175, 3665379.860532432, -11759216.929447813, 6282807.977100443]
 };
 
 function onLoad() {

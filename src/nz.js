@@ -1,8 +1,3 @@
-import ol from 'openlayers';
-import '../style/main.css';
-import 'openlayers/dist/ol.css';
-import 'ol3-layerswitcher/src/ol3-layerswitcher';
-import 'ol3-layerswitcher/src/ol3-layerswitcher.css';
 import {createMap} from './maps';
 
 const NZ_MAP = {
@@ -10,7 +5,7 @@ const NZ_MAP = {
     layers: [
         {
             className: 'Tile',
-            maxZoom: 12,
+            maxZoom: 11,
             source: {
                 className: 'XYZ',
                 url: getLINZUrl(2343),
@@ -23,7 +18,7 @@ const NZ_MAP = {
         },
         {
             className: 'Tile',
-            minZoom: 12,
+            minZoom: 11,
             source: {
                 className: 'XYZ',
                 url: getLINZUrl(2324),
@@ -48,19 +43,10 @@ const NZ_MAP = {
                     color: 'red',
                     width: 2
                 }
-            },
-            listeners: {
-                change: {
-                    once: true,
-                    fn: e => {
-                        let layer = e.target,
-                            extent = layer.getSource().getExtent();
-                        layer.setExtent(extent);
-                    }
-                }
             }
         }
-    ]
+    ],
+    fit: [18681940.61222152,-5881125.010165848,19555203.40186669,-4086242.168897377]
 };
 
 function getLINZUrl(layer) {

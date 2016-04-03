@@ -1,5 +1,8 @@
 import ol from 'openlayers';
 import 'openlayers/dist/ol.css';
+import 'ol3-layerswitcher/src/ol3-layerswitcher';
+import 'ol3-layerswitcher/src/ol3-layerswitcher.css';
+import '../style/main.css';
 
 const MAP_DEFAULTS = {
         controls: [
@@ -191,15 +194,11 @@ export function createMap(config) {
     });
     let map = new ol.Map(config),
         view = map.getView();
-    map.getLayers().forEach(l => {
-        if (l instanceof ol.layer.Vector) {
-            l.once('change:extent', (e) => {
-                let view = map.getView(),
-                    extent = e.target.getExtent();
-                view.fit(extent, map.getSize());
-            });
-        }
+    if (config.fit) {
+        view.fit(config.fit, map.getSize());
+    }
 
+    map.getLayers().forEach(l => {
         if (l.get('minZoom')) {
             l.setMinResolution(calcResolutionForZoom(view, l.get('minZoom')));
         }
