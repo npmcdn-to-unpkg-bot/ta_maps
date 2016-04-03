@@ -1,8 +1,8 @@
-import ol from 'openlayers';
-import 'openlayers/dist/ol.css';
-import 'ol3-layerswitcher/src/ol3-layerswitcher';
-import 'ol3-layerswitcher/src/ol3-layerswitcher.css';
-import '../style/main.css';
+import ol from "openlayers";
+import "openlayers/dist/ol.css";
+import "ol3-layerswitcher/src/ol3-layerswitcher";
+import "ol3-layerswitcher/src/ol3-layerswitcher.css";
+import "../style/main.css";
 
 const MAP_DEFAULTS = {
         controls: [
@@ -74,6 +74,10 @@ function createFormat(config) {
 }
 
 function createSource(config) {
+    if (!config) {
+        return;
+    }
+
     config = Object.assign({}, SOURCE_DEFAULTS, config);
     Object.assign(config, {
         attributions: createAttributions(config.attributions),
@@ -81,7 +85,7 @@ function createSource(config) {
     });
 
     let source = new ol.source[config.className](config);
-    addListeners(source, config)
+    addListeners(source, config);
     return source
 }
 
@@ -153,6 +157,7 @@ function createStyle(config) {
 function createLayer(config) {
     config = Object.assign({}, LAYER_DEFAULTS, config);
     Object.assign(config, {
+        layers: createLayers(config.layers),
         source: createSource(config.source),
         style: createStyle(config.style)
     });
@@ -193,20 +198,25 @@ export function createMap(config) {
         view: createView(config.view)
     });
     let map = new ol.Map(config),
-        view = map.getView();
+        view = map.getView(),
+        setMinMaxZoom = layer => {
+            if (layer.get('minZoom')) {
+                layer.setMinResolution(calcResolutionForZoom(view, layer.get('minZoom')));
+            }
+
+            if (layer.get('maxZoom')) {
+                layer.setMaxResolution(calcResolutionForZoom(view, layer.get('maxZoom')));
+            }
+
+            if (layer.getLayers && layer.getLayers()) {
+                layer.getLayers().forEach(setMinMaxZoom);
+            }
+        };
     if (config.fit) {
         view.fit(config.fit, map.getSize());
     }
 
-    map.getLayers().forEach(l => {
-        if (l.get('minZoom')) {
-            l.setMinResolution(calcResolutionForZoom(view, l.get('minZoom')));
-        }
-
-        if (l.get('maxZoom')) {
-            l.setMaxResolution(calcResolutionForZoom(view, l.get('maxZoom')));
-        }
-    });
+    map.getLayers().forEach(setMinMaxZoom);
     window.m = map;
     return map;
 }

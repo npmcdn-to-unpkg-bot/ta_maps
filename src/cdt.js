@@ -18,6 +18,7 @@ const CDT_MAP = {
         },
         {
             className: 'Vector',
+            type: 'overlay',
             source: {
                 className: 'Vector',
                 url: 'https://dl.dropboxusercontent.com/u/3679475/CDT.kml',
