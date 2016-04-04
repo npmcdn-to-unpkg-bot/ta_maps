@@ -3,7 +3,9 @@ import {createMap} from "./maps";
 const a = {
     "layers": {
         "USA Topo": {
+            "className": "Tile",
             "source": {
+                "className": "XYZ",
                 "url": "http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}.png",
                 "attributions": [
                     {
@@ -19,7 +21,9 @@ const a = {
             "combine": true,
             "layers": [
                 {
+                    "className": "Tile",
                     "source": {
+                        "className": "XYZ",
                         "url": "http://maps.scinfo.org.nz/cached/tms/1.0.0/topobasemap_notext@g/{z}/{x}/{-y}.png",
                         "attributions": [
                             {
@@ -29,13 +33,10 @@ const a = {
                     }
                 },
                 {
+                    "className": "Tile",
                     "source": {
-                        "url": "http://maps.scinfo.org.nz/cached/tms/1.0.0/text@g/{z}/{x}/{-y}.png",
-                        "attributions": [
-                            {
-                                "html": "Source: Landcare Research and licensed by Landcare Research for re-use under <a href=\"http://creativecommons.org/licenses/by/3.0/nz/\">Creative Commons CC-BY New Zealand license</a>."
-                            }
-                        ]
+                        "className": "XYZ",
+                        "url": "http://maps.scinfo.org.nz/cached/tms/1.0.0/text@g/{z}/{x}/{-y}.png"
                     }
                 }
             ]
@@ -47,8 +48,10 @@ const a = {
             "combine": true,
             "layers": [
                 {
+                    "className": "Tile",
                     "maxZoom": 11,
                     "source": {
+                        "className": "XYZ",
                         "url": "http://tiles-{a-d}.data-cdn.linz.govt.nz/services;key=65bc0122063d4dbebe7a16f80eb5f97e/tiles/v4/layer=2343/EPSG:3857/{z}/{x}/{y}.png",
                         "attributions": [
                             {
@@ -58,8 +61,10 @@ const a = {
                     }
                 },
                 {
+                    "className": "Tile",
                     "minZoom": 11,
                     "source": {
+                        "className": "XYZ",
                         "url": "http://tiles-{a-d}.data-cdn.linz.govt.nz/services;key=65bc0122063d4dbebe7a16f80eb5f97e/tiles/v4/layer=2324/EPSG:3857/{z}/{x}/{y}.png",
                         "attributions": [
                             {
@@ -76,13 +81,13 @@ const a = {
             "layers": [
                 "USA Topo"
             ],
-            "path": "https://dl.dropboxusercontent.com/u/3679475/CDT.kml",
             "fit": [
                 -12683252.084670175,
                 3665379.860532432,
                 -11759216.929447813,
                 6282807.977100443
             ],
+            "path": "https://dl.dropboxusercontent.com/u/3679475/CDT.kml",
             "omfg": [
                 {
                     "type": "BCNav",
@@ -99,13 +104,20 @@ const a = {
                 "Landcare Research",
                 "Land Information"
             ],
-            "path": "https://dl.dropboxusercontent.com/u/3679475/TeAraroaTrail_asTrack.gpx",
             "fit": [
                 18681940.61222152,
                 -5881125.010165848,
                 19555203.40186669,
                 -4086242.168897377
             ],
+            "controls": [
+                "Attribution",
+                "ScaleLine",
+                "LayerSwitcher",
+                "Zoom",
+                "ZoomSlider"
+            ],
+            "path": "https://dl.dropboxusercontent.com/u/3679475/TeAraroaTrail_asTrack.gpx",
             "omfg": [
                 {
                     "type": "BCNav",
@@ -147,32 +159,32 @@ async function getObject(bucket, object) {
 }
 
 export async function getTrailMap(trailName, target) {
-    let trailsData = a, //await getObject('atgardner-blog', 'trails.json'),
+    let data = a, //await getObject('atgardner-blog', 'trails.json'),
         trails = a.trails,
         trail = trails[trailName];
     trail.target = target;
-    trail.layers = trail.layers.map(l => {
-        let layer = Object.assign({
-            className: 'Tile'
-        }, trailsData.layers[l]);
-        layer.source = Object.assign({
-            className: 'XYZ'
-        }, layer.source);
-        return layer;
-    });
-    trail.layers.push({
-        className: 'Vector',
-        type: 'overlay',
-        source: {
+    trail.layers = trail.layers.map(l => data.layers[l]);
+    let pathClass = trail.path.split('.').pop().toUpperCase(),
+        pathLayer = {
             className: 'Vector',
-            url: trail.path,
-            format: {
-                className: trail.path.split('.').pop().toUpperCase()
+            type: 'overlay',
+            source: {
+                className: 'Vector',
+                url: trail.path,
+                format: {
+                    className: pathClass
+                }
+            }
+        };
+    if (pathClass === 'GPX') {
+        pathLayer.style = {
+            stroke: {
+                color: 'red',
+                width: 1
             }
         }
-    });
+    }
+
+    trail.layers.push(pathLayer);
     createMap(trail);
 }
-
-//document.addEventListener('DOMContentLoaded', onLoad);
-// window.onload = handleClientLoad;

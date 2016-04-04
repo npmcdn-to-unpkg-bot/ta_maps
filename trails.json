@@ -1,11 +1,15 @@
 {
   "layers": {
     "USA Topo": {
+      "className": "Tile",
       "source": {
+        "className": "XYZ",
         "url": "http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}.png",
-        "attributions": {
-          "html": "Source: Copyright:© 2013 National Geographic Society, i-cubed."
-        }
+        "attributions": [
+          {
+            "html": "Source: Copyright:© 2013 National Geographic Society, i-cubed."
+          }
+        ]
       }
     },
     "Landcare Research": {
@@ -15,7 +19,9 @@
       "combine": true,
       "layers": [
         {
+          "className": "Tile",
           "source": {
+            "className": "XYZ",
             "url": "http://maps.scinfo.org.nz/cached/tms/1.0.0/topobasemap_notext@g/{z}/{x}/{-y}.png",
             "attributions": [
               {
@@ -25,13 +31,10 @@
           }
         },
         {
+          "className": "Tile",
           "source": {
-            "url": "http://maps.scinfo.org.nz/cached/tms/1.0.0/text@g/{z}/{x}/{-y}.png",
-            "attributions": [
-              {
-                "html": "Source: Landcare Research and licensed by Landcare Research for re-use under <a href=\"http://creativecommons.org/licenses/by/3.0/nz/\">Creative Commons CC-BY New Zealand license</a>."
-              }
-            ]
+            "className": "XYZ",
+            "url": "http://maps.scinfo.org.nz/cached/tms/1.0.0/text@g/{z}/{x}/{-y}.png"
           }
         }
       ]
@@ -43,8 +46,10 @@
       "combine": true,
       "layers": [
         {
+          "className": "Tile",
           "maxZoom": 11,
           "source": {
+            "className": "XYZ",
             "url": "http://tiles-{a-d}.data-cdn.linz.govt.nz/services;key=65bc0122063d4dbebe7a16f80eb5f97e/tiles/v4/layer=2343/EPSG:3857/{z}/{x}/{y}.png",
             "attributions": [
               {
@@ -54,8 +59,10 @@
           }
         },
         {
+          "className": "Tile",
           "minZoom": 11,
           "source": {
+            "className": "XYZ",
             "url": "http://tiles-{a-d}.data-cdn.linz.govt.nz/services;key=65bc0122063d4dbebe7a16f80eb5f97e/tiles/v4/layer=2324/EPSG:3857/{z}/{x}/{y}.png",
             "attributions": [
               {
@@ -72,13 +79,13 @@
       "layers": [
         "USA Topo"
       ],
-      "kml": "https://dl.dropboxusercontent.com/u/3679475/CDT.kml",
       "fit": [
         -12683252.084670175,
         3665379.860532432,
         -11759216.929447813,
         6282807.977100443
       ],
+      "path": "https://dl.dropboxusercontent.com/u/3679475/CDT.kml",
       "omfg": [
         {
           "type": "BCNav",
@@ -95,13 +102,20 @@
         "Landcare Research",
         "Land Information"
       ],
-      "gpx": "https://dl.dropboxusercontent.com/u/3679475/TeAraroaTrail_asTrack.gpx",
       "fit": [
         18681940.61222152,
         -5881125.010165848,
         19555203.40186669,
         -4086242.168897377
       ],
+      "controls": [
+        "Attribution",
+        "ScaleLine",
+        "LayerSwitcher",
+        "Zoom",
+        "ZoomSlider"
+      ],
+      "path": "https://dl.dropboxusercontent.com/u/3679475/TeAraroaTrail_asTrack.gpx",
       "omfg": [
         {
           "type": "BCNav",
