@@ -17,7 +17,7 @@
     "css-loader": "^0.23.1",
     "gulp": "^3.9.1",
     "imports-loader": "^0.6.5",
-    "ol3-layerswitcher": "github:walkermatt/ol3-layerswitcher",
+    "ol3-layerswitcher": "github:ATGardner/ol3-layerswitcher",
     "openlayers": "^3.14.2",
     "style-loader": "^0.13.1",
     "webpack": "^1.12.14",
