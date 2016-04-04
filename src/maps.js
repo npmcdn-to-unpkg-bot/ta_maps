@@ -15,7 +15,6 @@ const MAP_DEFAULTS = {
         loadTilesWhileInteracting: true
     },
     LAYER_DEFAULTS = {
-        type: 'base',
         preload: 7,
 
         // for VectorLayer

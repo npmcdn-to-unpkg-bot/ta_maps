@@ -6,7 +6,7 @@ import "../style/main.css";
 import {createMap} from "./maps";
 
 const NZ_MAP = {
-    target: 'map-nz1',
+    target: 'map-nz',
     fit: [18681940.61222152, -5881125.010165848, 19555203.40186669, -4086242.168897377],
     controls: [
         'Attribution',
@@ -18,12 +18,11 @@ const NZ_MAP = {
     layers: [
         {
             className: 'Group',
-            title: 'Land Information',
-            preload: 7,
+            title: 'Land Information asd',
+            type: 'base',
             layers: [
                 {
                     className: 'Tile',
-                    title: 'Land Information 1',
                     maxZoom: 11,
                     source: {
                         className: 'XYZ',
@@ -37,7 +36,6 @@ const NZ_MAP = {
                 },
                 {
                     className: 'Tile',
-                    title: 'Land Information 2',
                     minZoom: 11,
                     source: {
                         className: 'XYZ',
@@ -48,7 +46,7 @@ const NZ_MAP = {
                             }
                         ]
                     }
-                },
+                }
             ]
         },
         {
