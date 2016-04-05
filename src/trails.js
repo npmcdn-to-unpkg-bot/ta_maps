@@ -26,9 +26,21 @@ async function getObject(bucket, object) {
     return res.result;
 }
 
+async function getTrailsData() {
+    return await getObject('atgardner-blog', 'trails.json');
+}
+
+async function getTrailsData2() {
+    return fetch('https://storage.googleapis.com/atgardner-blog/trails.json')
+        .then(response => response.json())
+        .catch(error => {
+            console.error(error);
+        });
+}
+
 export async function getTrailMap(trailName, target) {
-    let data = await getObject('atgardner-blog', 'trails.json'),
-        trails = a.trails,
+    let data = await getTrailsData2(),
+        trails = data.trails,
         trail = trails[trailName];
     trail.target = target;
     trail.layers = trail.layers.map(l => data.layers[l]);

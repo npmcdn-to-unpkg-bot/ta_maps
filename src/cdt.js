@@ -4,4 +4,5 @@ function onLoad() {
     getTrailMap('cdt', 'map-cdt');
 }
 
-document.addEventListener('DOMContentLoaded', onLoad);
+// window.handleClientLoad = onLoad;
+window.onload = onLoad;
