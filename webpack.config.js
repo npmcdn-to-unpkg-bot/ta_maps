@@ -4,7 +4,7 @@ module.exports = {
     entry: {
         nz: src + '/nz.js',
         cdt: src + '/cdt.js',
-        // trails: src + '/trails.js'
+        main: src + '/main.js'
     },
     output: {
         path: output,
@@ -25,7 +25,8 @@ module.exports = {
                 query: {
                     presets: [
                         'es2015',
-                        'stage-0'
+                        'stage-0',
+                        'react'
                     ],
                     plugins: ['transform-runtime']
                 }
