@@ -4,5 +4,4 @@ function onLoad() {
     getTrailMap('ta', 'map-nz');
 }
 
-// document.addEventListener('DOMContentLoaded', onLoad);
-window.handleClientLoad = onLoad;
+document.addEventListener('DOMContentLoaded', onLoad);

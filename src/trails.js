@@ -1,34 +1,34 @@
 import {createMap} from "./maps";
 
-let apiKey = 'AIzaSyB2e4nLfLBwK_5O7ofehrIi2394m5UbNkk',
-    loadPromise;
+// let apiKey = 'AIzaSyB2e4nLfLBwK_5O7ofehrIi2394m5UbNkk',
+//     loadPromise;
 
-async function loadApi() {
-    if (!loadPromise) {
-        gapi.client.setApiKey(apiKey);
-        loadPromise = gapi.client.load('storage', 'v1');
-    }
-
-    await loadPromise;
-}
-
-async function getObject(bucket, object) {
-    await loadApi();
-    console.time('getObject');
-    let trails = await gapi.client.storage.objects.get({
-        bucket: bucket,
-        object: object
-    });
-    let res = await gapi.client.request({
-        path: trails.result.mediaLink
-    });
-    console.timeEnd('getObject');
-    return res.result;
-}
-
-async function getTrailsData() {
-    return await getObject('atgardner-blog', 'trails.json');
-}
+// async function loadApi() {
+//     if (!loadPromise) {
+//         gapi.client.setApiKey(apiKey);
+//         loadPromise = gapi.client.load('storage', 'v1');
+//     }
+//
+//     await loadPromise;
+// }
+//
+// async function getObject(bucket, object) {
+//     await loadApi();
+//     console.time('getObject');
+//     let trails = await gapi.client.storage.objects.get({
+//         bucket: bucket,
+//         object: object
+//     });
+//     let res = await gapi.client.request({
+//         path: trails.result.mediaLink
+//     });
+//     console.timeEnd('getObject');
+//     return res.result;
+// }
+//
+// async function getTrailsData() {
+//     return await getObject('atgardner-blog', 'trails.json');
+// }
 
 async function getTrailsData2() {
     return fetch('https://storage.googleapis.com/atgardner-blog/trails.json')
