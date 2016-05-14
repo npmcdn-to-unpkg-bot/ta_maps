@@ -1,8 +1,8 @@
-import ol from "openlayers";
-import "openlayers/dist/ol.css";
-import "ol3-layerswitcher/src/ol3-layerswitcher";
-import "ol3-layerswitcher/src/ol3-layerswitcher.css";
-import "../style/main.css";
+import ol from 'openlayers';
+import 'openlayers/dist/ol.css';
+import 'ol3-layerswitcher/src/ol3-layerswitcher';
+import 'ol3-layerswitcher/src/ol3-layerswitcher.css';
+import '../style/main.css';
 
 const MAP_DEFAULTS = {
         controls: [

@@ -1,4 +1,4 @@
-import {getTrailMap} from "./trails";
+import {getTrailMap} from './trails';
 
 function onLoad() {
     getTrailMap('ta', 'map-nz');

@@ -1,15 +1,16 @@
 {
   "layers": {
-    "USA Topo": {
+    "IsraelHiking": {
       "className": "Tile",
       "source": {
         "className": "XYZ",
-        "url": "http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}.png",
+        "url": "http://osm.org.il/IsraelHiking/Tiles/{z}/{x}/{y}.png",
         "attributions": [
           {
-            "html": "Source: Copyright:© 2013 National Geographic Society, i-cubed."
+            "html": "Data © <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap contributors</a>"
           }
-        ]
+        ],
+        "minZoom": 7
       }
     },
     "Landcare Research": {
@@ -72,6 +73,18 @@
           }
         }
       ]
+    },
+    "USA Topo": {
+      "className": "Tile",
+      "source": {
+        "className": "XYZ",
+        "url": "http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}.png",
+        "attributions": [
+          {
+            "html": "Source: Copyright:© 2013 National Geographic Society, i-cubed."
+          }
+        ]
+      }
     }
   },
   "trails": {
@@ -94,6 +107,28 @@
         {
           "type": "MBTiles",
           "url": "https://storage.googleapis.com/atgardner/CDT%20-%20USA%20Topo%20Maps%20-%200-15%20-%20MBTiles.zip"
+        }
+      ]
+    },
+    "int": {
+      "layers": [
+        "IsraelHiking"
+      ],
+      "fit": [
+        3850897.48500718,
+        3729133.2989488943,
+        3951488.6142304717,
+        3780040.3597868215
+      ],
+      "path": "https://dl.dropboxusercontent.com/u/3679475/INT.gpx",
+      "omfg": [
+        {
+          "type": "BCNav",
+          "url": "https://storage.googleapis.com/atgardner/TA%20-%20Land%20Information%20-%200-15%20-%20BCNav.zip"
+        },
+        {
+          "type": "MBTiles",
+          "url": "https://storage.googleapis.com/atgardner/TA%20-%20Land%20Information%20-%200-15%20-%20MBTiles.zip"
         }
       ]
     },

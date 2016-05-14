@@ -1,4 +1,4 @@
-import {getTrailMap} from "./trails";
+import {getTrailMap} from './trails';
 
 function onLoad() {
     getTrailMap('cdt', 'map-cdt');

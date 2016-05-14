@@ -64,7 +64,7 @@ gulp.task('webpack:build-dev', function (callback) {
     });
 });
 
-gulp.task('webpack-dev-server', function () {
+gulp.task('webpack-dev-server', function (callback) {
     // modify some webpack config options
     let serverConfig = Object.create(webpackConfig);
     serverConfig.devtool = 'eval-source-map';
@@ -81,5 +81,6 @@ gulp.task('webpack-dev-server', function () {
         .listen(8080, 'localhost', function (err) {
             if (err) throw new gutil.PluginError('webpack-dev-server', err);
             gutil.log('[webpack-dev-server]', 'http://localhost:8080/webpack-dev-server/index.html');
+            callback();
         });
 });

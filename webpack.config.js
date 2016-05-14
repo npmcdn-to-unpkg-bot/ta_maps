@@ -2,9 +2,10 @@ var src = __dirname + '/src',
     output = __dirname + '/build';
 module.exports = {
     entry: {
-        nz: src + '/nz.js',
         cdt: src + '/cdt.js',
-        main: src + '/main.js'
+        int: src + '/int.js',
+        nz: src + '/nz.js'//,
+        // main: src + '/main.js'
     },
     output: {
         path: output,
