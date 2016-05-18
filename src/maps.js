@@ -171,7 +171,6 @@ function createLayers(layers) {
 
 function createCenter(config) {
     return config ? ol.proj.fromLonLat(config.center, config.projection) : ol.proj.fromLonLat([0, 0]);
-
 }
 
 function createView(config) {
