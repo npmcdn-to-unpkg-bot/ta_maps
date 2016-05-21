@@ -19,7 +19,7 @@
     "gulp": "^3.9.1",
     "imports-loader": "^0.6.5",
     "marked": "^0.3.5",
-    "ol3-layerswitcher": "github:ATGardner/ol3-layerswitcher",
+    "ol3-layerswitcher": "github:walkermatt/ol3-layerswitcher",
     "openlayers": "^3.14.2",
     "react": "^0.14.8",
     "react-dom": "^0.14.8",

@@ -1,5 +1,3 @@
-import {createMap} from "./maps";
-
 const trails = {
     "layers": {
         "IsraelHiking": {
@@ -167,33 +165,7 @@ const trails = {
     }
 };
 
-// let apiKey = 'AIzaSyB2e4nLfLBwK_5O7ofehrIi2394m5UbNkk',
-//     loadPromise;
-//
-// async function loadApi() {
-//     if (!loadPromise) {
-//         gapi.client.setApiKey(apiKey);
-//         loadPromise = gapi.client.load('storage', 'v1');
-//     }
-//
-//     await loadPromise;
-// }
-//
-// async function getObject(bucket, object) {
-//     await loadApi();
-//     console.time('getObject');
-//     let trails = await gapi.client.storage.objects.get({
-//         bucket: bucket,
-//         object: object
-//     });
-//     let res = await gapi.client.request({
-//         path: trails.result.mediaLink
-//     });
-//     console.timeEnd('getObject');
-//     return res.result;
-// }
-
-async function getTrailData() {
+async function getTrailsData() {
     if (window.location.hostname === 'localhost') {
         return trails;
     } else {
@@ -202,11 +174,10 @@ async function getTrailData() {
     }
 }
 
-export async function getTrailMap(trailName, target) {
-    let data = await getTrailData(),
+export async function getTrailMap(trailName) {
+    let data = await getTrailsData(),
         trails = data.trails,
         trail = trails[trailName];
-    trail.target = target;
     trail.layers = trail.layers.map(l => data.layers[l]);
     let pathClass = trail.path.split('.').pop().toUpperCase(),
         pathLayer = {
@@ -230,5 +201,5 @@ export async function getTrailMap(trailName, target) {
     }
 
     trail.layers.push(pathLayer);
-    createMap(trail);
+    return trail;
 }

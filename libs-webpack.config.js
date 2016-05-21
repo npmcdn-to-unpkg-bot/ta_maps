@@ -2,15 +2,16 @@ var src = __dirname + '/src',
     output = __dirname + '/build';
 module.exports = {
     entry: {
-        cdt: src + '/cdt.js',
-        int: src + '/int.js',
-        ta: src + '/ta.js'//,
-        // main: src + '/main.js'
+        maps: src + '/maps.js',
+        trails: src + '/trails.js'
     },
     output: {
         path: output,
         filename: '[name].bundle.js',
-        publicPath: '/assets/'
+        library: '[name]'
+    },
+    externals: {
+        'ol': 'ol'
     },
     module: {
         loaders: [

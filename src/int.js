@@ -1,11 +1,13 @@
-import {getTrailMap} from './trails';
+import '../style/main.css';
 
-function onLoad() {
-    console.log('onLoad');
+async function onLoad() {
+    console.log('onLoad INT');
     try {
-        getTrailMap('int', 'map-int');
+        let m = await trails.getTrailMap('int');
+        m.target = 'map-int';
+        maps.createMap(m);
     } catch (e) {
-        console.error('Failed int', e);
+        console.error('Failed INT', e);
     }
 }
 
