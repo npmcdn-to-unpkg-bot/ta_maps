@@ -4,8 +4,7 @@ module.exports = {
     entry: {
         cdt: src + '/cdt.js',
         int: src + '/int.js',
-        ta: src + '/ta.js'//,
-        // main: src + '/main.js'
+        ta: src + '/ta.js'
     },
     output: {
         path: output,
@@ -22,8 +21,7 @@ module.exports = {
                 query: {
                     presets: [
                         'es2015',
-                        'stage-0',
-                        'react'
+                        'stage-0'
                     ],
                     plugins: ['transform-runtime']
                 }
