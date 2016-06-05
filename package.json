@@ -1,10 +1,16 @@
 {
-  "name": "ta_maps",
+  "name": "olWrapper",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prestart": "babel-node tools/startMessage.js",
+    "start": "npm-run-all --parallel open:src lint:watch test:watch",
+    "open:src": "babel-node tools/srcServer.js",
+    "lint": "esw webpack.config.* src tools",
+    "lint:watch": "REM npm run lint -- --watch",
+    "test": "mocha --reporter spec tools/testSetup.js \"src/**/*.test.js\"",
+    "test:watch": "REM npm run test -- --watch"
   },
   "author": "Noam \"Amtrak\" Gal",
   "license": "ISC",
@@ -22,5 +28,14 @@
     "style-loader": "^0.13.1",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "colors": "^1.1.2",
+    "express": "^4.13.4",
+    "npm-run-all": "^2.1.1",
+    "open": "0.0.5",
+    "openlayers": "^3.16.0",
+    "webpack-dev-middleware": "^1.6.1"
   }
 }

@@ -174,7 +174,7 @@ async function getTrailsData() {
     }
 }
 
-export async function getTrailMap(trailName) {
+export default async function getTrailMap(trailName) {
     let data = await getTrailsData(),
         trails = data.trails,
         trail = trails[trailName];
