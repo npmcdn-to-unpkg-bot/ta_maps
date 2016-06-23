@@ -166,12 +166,13 @@ const trails = {
 };
 
 async function getTrailsData() {
-    if (window.location.hostname === 'localhost') {
+    // if (window.location.hostname === 'localhost') {
         return trails;
-    } else {
-        let response = await fetch('https://storage.googleapis.com/atgardner-blog/trails.json');
-        return await response.json();
-    }
+    // } else {
+    //     debugger;
+    //     let response = await fetch('https://storage.googleapis.com/atgardner-blog/trails.json');
+    //     return await response.json();
+    // }
 }
 
 export default async function getTrailMap(trailName) {

@@ -65,7 +65,8 @@ function createAttributions(attributions) {
 }
 
 function createFormat(config) {
-    return config && new ol.format[config.className](config);
+    const result = config && new ol.format[config.className](config);
+    return result;
 }
 
 function createSource(config) {
@@ -212,4 +213,9 @@ export default function createMap(config) {
 
     map.getLayers().forEach(setMinMaxZoom);
     return map;
+}
+
+export function createMap2(config, className = 'Map') {
+    const clazz = ol[className];
+    const a = Reflect.construct(clazz, [config]);
 }
