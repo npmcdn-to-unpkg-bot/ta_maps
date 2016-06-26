@@ -1,88 +1,78 @@
 const trails = {
     "layers": {
         "IsraelHiking": {
-            "className": "Tile",
+            "olClass": "layer.Tile",
             "source": {
-                "className": "XYZ",
+                "olClass": "source.XYZ",
                 "url": "http://osm.org.il/IsraelHiking/Tiles/{z}/{x}/{y}.png",
                 "attributions": [
-                    {
-                        "html": "Data © <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap contributors</a>"
-                    }
+                    "Data © <a href=\"http://www.openstreetmap.org/copyright\">OpenStreetMap contributors</a>"
                 ],
                 "minZoom": 7
             }
         },
         "Landcare Research": {
-            "className": "Group",
+            "olClass": "layer.Group",
             "title": "Landcare Research",
             "type": "base",
             "combine": true,
             "layers": [
                 {
-                    "className": "Tile",
+                    "olClass": "layer.Tile",
                     "source": {
-                        "className": "XYZ",
+                        "olClass": "source.XYZ",
                         "url": "http://maps.scinfo.org.nz/cached/tms/1.0.0/topobasemap_notext@g/{z}/{x}/{-y}.png",
                         "attributions": [
-                            {
-                                "html": "Source: Landcare Research and licensed by Landcare Research for re-use under <a href=\"http://creativecommons.org/licenses/by/3.0/nz/\">Creative Commons CC-BY New Zealand license</a>."
-                            }
+                            "Source: Landcare Research and licensed by Landcare Research for re-use under <a href=\"http://creativecommons.org/licenses/by/3.0/nz/\">Creative Commons CC-BY New Zealand license</a>."
                         ]
                     }
                 },
                 {
-                    "className": "Tile",
+                    "olClass": "layer.Tile",
                     "source": {
-                        "className": "XYZ",
+                        "olClass": "source.XYZ",
                         "url": "http://maps.scinfo.org.nz/cached/tms/1.0.0/text@g/{z}/{x}/{-y}.png"
                     }
                 }
             ]
         },
         "Land Information": {
-            "className": "Group",
+            "olClass": "layer.Group",
             "title": "Land Information",
             "type": "base",
             "combine": true,
             "layers": [
                 {
-                    "className": "Tile",
+                    "olClass": "layer.Tile",
                     "maxZoom": 11,
                     "source": {
-                        "className": "XYZ",
+                        "olClass": "source.XYZ",
                         "url": "http://tiles-{a-d}.data-cdn.linz.govt.nz/services;key=65bc0122063d4dbebe7a16f80eb5f97e/tiles/v4/layer=2343/EPSG:3857/{z}/{x}/{y}.png",
                         "attributions": [
-                            {
-                                "html": "CC-By Land Information New Zealand. This product uses data sourced from Landcare Research under <a href=\"http://creativecommons.org/licenses/by/3.0/nz\">CC-BY</a>"
-                            }
+                            "CC-By Land Information New Zealand. This product uses data sourced from Landcare Research under <a href=\"http://creativecommons.org/licenses/by/3.0/nz\">CC-BY</a>"
                         ]
                     }
                 },
                 {
-                    "className": "Tile",
+                    "olClass": "layer.Tile",
                     "minZoom": 11,
                     "source": {
-                        "className": "XYZ",
+                        "olClass": "source.XYZ",
                         "url": "http://tiles-{a-d}.data-cdn.linz.govt.nz/services;key=65bc0122063d4dbebe7a16f80eb5f97e/tiles/v4/layer=2324/EPSG:3857/{z}/{x}/{y}.png",
                         "attributions": [
-                            {
-                                "html": "CC-By Land Information New Zealand. This product uses data sourced from Landcare Research under <a href=\"http://creativecommons.org/licenses/by/3.0/nz\">CC-BY</a>"
-                            }
+                            "CC-By Land Information New Zealand. This product uses data sourced from Landcare Research under <a href=\"http://creativecommons.org/licenses/by/3.0/nz\">CC-BY</a>"
                         ]
                     }
                 }
             ]
         },
         "USA Topo": {
-            "className": "Tile",
+            "olClass": "layer.Tile",
             "source": {
-                "className": "XYZ",
+                "olClass": "source.XYZ",
                 "url": "http://server.arcgisonline.com/ArcGIS/rest/services/USA_Topo_Maps/MapServer/tile/{z}/{y}/{x}.png",
                 "attributions": [
-                    {
-                        "html": "Source: Copyright:© 2013 National Geographic Society, i-cubed."
-                    }
+                    "Source: Copyright:© 2013 National Geographic Society, i-cubed."
                 ]
             }
         }
@@ -163,37 +153,75 @@ const trails = {
             ]
         }
     }
-};
+    },
+    MAP_DEFAULTS = {
+        controls: [
+            {
+                olClass: 'control.Attribution'
+            },
+            {
+                olClass: 'control.ScaleLine',
+            },
+            {
+                olClass: 'control.Zoom',
+            },
+            {
+                olClass: 'control.ZoomSlider'
+            }
+        ],
+        loadTilesWhileAnimating: true,
+        loadTilesWhileInteracting: true
+    },
+    LAYER_DEFAULTS = {
+        preload: 7,
+
+        // for VectorLayer
+        updateWhileAnimating: true,
+        updateWhileInteracting: true
+    },
+    VIEW_DEFAULTS = {
+        olClass: 'View',
+        maxZoom: 15,
+        zoom: 5
+    },
+    SOURCE_DEFAULTS = {
+        maxZoom: 15
+    };
 
 async function getTrailsData() {
     if (window.location.hostname === 'localhost') {
         return trails;
     } else {
-        let response = await fetch('https://storage.googleapis.com/atgardner-blog/trails.json');
+        const response = await fetch('https://storage.googleapis.com/atgardner-blog/trails.json');
         return await response.json();
     }
 }
 
-export default async function getTrailMap(trailName) {
-    let data = await getTrailsData(),
-        trails = data.trails,
-        trail = trails[trailName];
-    trail.layers = trail.layers.map(l => data.layers[l]);
-    let pathClass = trail.path.split('.').pop().toUpperCase(),
+export async function getTrailConfig(trailName) {
+    const {trails: {[trailName]: trail}, layers} = await getTrailsData();
+    trail.layers = trail.layers.map(l => {
+        const layer = Object.assign({}, layers[l], LAYER_DEFAULTS);
+        layer.source = Object.assign({}, layer.source, SOURCE_DEFAULTS);
+        return layer;
+    });
+    const pathClass = trail.path.split('.').pop().toUpperCase(),
+        format = `format.${pathClass}`,
         pathLayer = {
-            className: 'Vector',
+            olClass: 'layer.Vector',
             type: 'overlay',
-            source: {
-                className: 'Vector',
+            source: Object.assign({
+                olClass: 'source.Vector',
                 url: trail.path,
                 format: {
-                    className: pathClass
+                    olClass: format
                 }
-            }
+            }, SOURCE_DEFAULTS)
         };
     if (pathClass === 'GPX') {
         pathLayer.style = {
+            olClass: 'style.Style',
             stroke: {
+                olClass: 'style.Stroke',
                 color: 'red',
                 width: 1
             }
@@ -201,5 +229,6 @@ export default async function getTrailMap(trailName) {
     }
 
     trail.layers.push(pathLayer);
-    return trail;
+    trail.view = Object.assign({}, trail.view, VIEW_DEFAULTS);
+    return Object.assign({}, trail, MAP_DEFAULTS);
 }

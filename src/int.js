@@ -1,14 +1,16 @@
-import '../style/main.css';
-import getTrailMap from './trails';
-import createMap from './maps';
+import "../style/main.css";
+import {getTrailConfig} from "./trails";
 
 async function onLoad() {
     debugger;
     console.log('onLoad INT');
     try {
-        let m = await getTrailMap('int');
-        m.target = 'map-int';
-        createMap(m);
+        const config = await getTrailConfig('int');
+        config.target = 'map-int';
+        const map = olWrapper.createOlObject(config),
+            view = map.getView();
+        view.fit(config.fit, map.getSize());
+        console.log('Done loading INT');
     } catch (e) {
         console.error('Failed INT', e);
     }
