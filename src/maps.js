@@ -1,8 +1,4 @@
-import ol from "openlayers";
-import "openlayers/dist/ol.css";
-import "ol3-layerswitcher/src/ol3-layerswitcher";
-import "ol3-layerswitcher/src/ol3-layerswitcher.css";
-import "../style/main.css";
+import ol from 'openlayers';
 
 const MAP_DEFAULTS = {
         controls: [
@@ -171,7 +167,6 @@ function createLayers(layers) {
 
 function createCenter(config) {
     return config ? ol.proj.fromLonLat(config.center, config.projection) : ol.proj.fromLonLat([0, 0]);
-
 }
 
 function createView(config) {
@@ -186,7 +181,7 @@ function calcResolutionForZoom(view, zoom) {
     return zoom && view.constrainResolution(view.getResolution() * Math.pow(2, view.getZoom()), zoom);
 }
 
-export function createMap(config) {
+export default function createMap(config) {
     config = Object.assign({}, MAP_DEFAULTS, config);
     Object.assign(config, {
         controls: createControls(config.controls),
@@ -216,6 +211,5 @@ export function createMap(config) {
     }
 
     map.getLayers().forEach(setMinMaxZoom);
-    window.m = map;
     return map;
 }
