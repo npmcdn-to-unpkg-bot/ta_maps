@@ -18,7 +18,9 @@ export default {
         contentBase: './src'
     },
     plugins: [
-        new webpack.NoErrorsPlugin()
+        new webpack.optimize.OccurenceOrderPlugin(),
+        new webpack.optimize.DedupePlugin(),
+        new webpack.optimize.UglifyJsPlugin()
     ],
     module: {
         loaders: [

@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "prestart": "babel-node tools/startMessage.js",
-    "start": "npm-run-all --parallel open:src lint:watch test:watch",
+    "start": "babel-node tools/srcServer.js",
     "open:src": "babel-node tools/srcServer.js",
-    "lint": "esw webpack.config.* src tools",
-    "lint:watch": "REM npm run lint -- --watch",
-    "test": "mocha --reporter spec tools/testSetup.js \"src/**/*.test.js\"",
-    "test:watch": "REM npm run test -- --watch"
+    "remove-dist": "rimraf ./dist",
+    "prebuild": "npm run remove-dist && mkdir dist",
+    "build": "babel-node tools/build.js",
+    "postbuild": "babel-node tools/distServer.js"
   },
   "author": "Noam \"Amtrak\" Gal",
   "license": "ISC",
